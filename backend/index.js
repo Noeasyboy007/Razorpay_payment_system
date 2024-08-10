@@ -1,6 +1,28 @@
-import { configDotenv } from "dotenv";
-import { express } from "express";
+import colors from 'colors';
+import dotenv from "dotenv";
+import express from "express";
+import cors from 'cors';
 
-config.config();
+import database from './database/db.js';
+import router from './routes/paymentRoutes.js';
+
 
 const app = express();
+
+dotenv.config();
+
+const PORT = process.env.PORT || 5000;
+
+// middleware
+app.use(express.json());
+app.use(cors());
+
+//* Available Route 
+app.get('/', (req, res) => {
+    res.send('Razorpay Payment Gateway Using React And Node Js ')
+})
+
+app.listen(PORT, async () => {
+    console.log(`Server started at ${PORT}`.bgBlue);
+    database();
+})
