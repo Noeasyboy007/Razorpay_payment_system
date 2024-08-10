@@ -14,6 +14,6 @@ router.post('/order', order)
 
 //VERIFY ROUTE
 // http://localhost:4000/api/payment/verify
-router.post('verify', verify)
+router.post('/verify', verify)
 
 export default router;

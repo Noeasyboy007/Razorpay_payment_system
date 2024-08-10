@@ -16,7 +16,7 @@ export const order = async (req, res) => {
 
     try {
         const options = {
-            amount: Number(amount),
+            amount: Number(amount * 100),
             currency: "INR",
             receipt: crypto.randomBytes(10).toString("hex"),
         }
@@ -46,7 +46,7 @@ export const verify = async (req, res) => {
         const sign = razorpay_order_id + "|" + razorpay_payment_id;
 
         // Create ExpectedSign
-        const expectedSign = crypto.createHmac("sha256", ({}).RAZORPAY_SECRET)
+        const expectedSign = crypto.createHmac("sha256", process.env.RAZORPAY_SECRET)
             .update(sign.toString())
             .digest("hex");
 
@@ -57,21 +57,29 @@ export const verify = async (req, res) => {
 
         // Condition 
         if (isAuthentic) {
-            const payment = new paymentModel({
-                razorpay_order_id,
-                razorpay_payment_id,
-                razorpay_signature
-            });
+            try {
+                const payment = new paymentModel({
+                    razorpay_order_id,
+                    razorpay_payment_id,
+                    razorpay_signature
+                });
 
-            // Save Payment 
-            await payment.save();
+                // Save Payment 
+                await payment.save();
+                console.log("Payment Saved Successful in database");
+                
 
-            // Send Message 
-            res.json({
-                message: "Payement Successfully"
-            });
+                // Send Message 
+                res.json({ message: "Payment Successfully" });
+            } catch (error) {
+                console.error("Error saving payment to database:", error);
+                res.status(500).json({ message: "Failed to save payment data!" });
+            }
+        } else {
+            res.status(400).json({ message: "Payment Verification Failed!" });
         }
-    } catch (error) {
+    }
+    catch (error) {
         res.status(500).json({ message: "Internal Server Error!" });
         console.log(error);
     }
