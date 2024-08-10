@@ -1,11 +1,13 @@
 import paymentModel from './../models/paymentModel.js';
 import Razorpay from 'razorpay';
 import crypto from 'crypto';
+import dotenv from 'dotenv';
 
+dotenv.config();
 
 const razorpayInstance = new Razorpay({
-    key_id: ({}).RAZORPAY_KEY_ID,
-    key_secret: ({}).RAZORPAY_SECRET,
+    key_id: process.env.RAZORPAY_KEY_ID,
+    key_secret: process.env.RAZORPAY_SECRET,
 });
 
 // ROUTE 1 : Create Order Api Using POST Method http://localhost:4000/api/payment/order
@@ -14,7 +16,7 @@ export const order = async (req, res) => {
 
     try {
         const options = {
-            amount: Number(amount * 100),
+            amount: Number(amount),
             currency: "INR",
             receipt: crypto.randomBytes(10).toString("hex"),
         }
@@ -55,7 +57,7 @@ export const verify = async (req, res) => {
 
         // Condition 
         if (isAuthentic) {
-            const payment = new Payment({
+            const payment = new paymentModel({
                 razorpay_order_id,
                 razorpay_payment_id,
                 razorpay_signature
