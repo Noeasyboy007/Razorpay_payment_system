@@ -22,6 +22,8 @@ app.get('/', (req, res) => {
     res.send('Razorpay Payment Gateway Using React And Node Js ')
 })
 
+app.use('/api/payment', router);
+
 app.listen(PORT, async () => {
     console.log(`Server started at ${PORT}`.bgBlue);
     database();
