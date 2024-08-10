@@ -80,8 +80,8 @@ export default function ProductCard() {
             <CardHeader color="" className="relative h-96 bg-[#2C3A47]">
                 {/* Image  */}
                 <img
-                    // src="https://img.staticmb.com/mbcontent/images/crop/uploads/2024/4/ideas-for-glass-bottle-painting_0_1200.jpg"
-                    src="../../public/product.jpg"
+                    src="https://img.staticmb.com/mbcontent/images/crop/uploads/2024/4/ideas-for-glass-bottle-painting_0_1200.jpg"
+                    // src="../../public/product.jpg"
                     alt="card-image"
                 />
             </CardHeader>
